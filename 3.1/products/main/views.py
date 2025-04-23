@@ -5,13 +5,21 @@ from rest_framework.views import APIView
 
 from main.serializers import ReviewSerializer, ProductListSerializer, ProductDetailsSerializer
 
+from products.main.models import Product
+
 
 @api_view(['GET'])
 def products_list_view(request):
+    if request.method == 'GET':
+        products = Product.objects.all()
+        ser = ProductListSerializer(products,many=True)
+        return Response(ser.data)
+    else:
+        return Response('Поддерживаются исключительно GET запросы')
     """реализуйте получение всех товаров из БД
     реализуйте сериализацию полученных данных
     отдайте отсериализованные данные в Response"""
-    pass
+
 
 
 class ProductDetailsView(APIView):
